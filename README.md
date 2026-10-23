@@ -4,7 +4,7 @@ A lightweight macOS menu bar battery monitor and charge limiter. Native SwiftUI,
 
 ---
 
-> [Download the latest release](https://github.com/dday55/BatteryFlow/releases/latest) · [Official Website (website/)](website/)
+> [Download the latest release](https://github.com/dday55/BatteryFlow/releases/latest) · [Official Website](https://dday55.github.io/BatteryFlow/)
 
 ## Screenshots
 
