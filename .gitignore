@@ -1,0 +1,31 @@
+.DS_Store
+/.build
+/Packages
+xcuserdata/
+DerivedData/
+.swiftpm/configuration/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc
+
+# 构建产物
+/.cache
+/BatteryFlow
+/BatteryFlow.app/
+/batteryflow-smc
+
+# 开发期生成物
+/AppIcon.png
+/AppIcon_*.png
+/generate_icon*.swift
+/render_sankey_updated.swift
+/updated_sankey.png
+
+# 菜单栏图标调试预览
+/menubar_*.png
+
+# 发布产物
+/BatteryFlow-*.dmg
+/BatteryFlow-*.zip
+/BatteryFlow-*.sha256
+/dist/
+/release-notes.md

@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set version from tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" Resources/Info.plist
+
+      - name: Build app
+        run: ./build.sh
+
+      - name: Package DMG and ZIP
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          mkdir -p dist/stage
+          cp -R BatteryFlow.app dist/stage/
+          ln -s /Applications dist/stage/Applications
+          hdiutil create -volname "BatteryFlow $VERSION" -srcfolder dist/stage -ov -format UDZO "dist/BatteryFlow-$VERSION.dmg"
+          ditto -c -k --sequesterRsrc --keepParent BatteryFlow.app "dist/BatteryFlow-$VERSION.zip"
+
+      - name: Build release notes from CHANGELOG
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          awk -v ver="$VERSION" '
+            index($0, "## [" ver "]") == 1 { capture = 1; next }
+            capture && substr($0, 1, 4) == "## [" { exit }
+            capture { print }
+          ' CHANGELOG.md > release-notes.md
+
+          if [ ! -s release-notes.md ]; then
+            printf '## BatteryFlow %s\n' "$GITHUB_REF_NAME" > release-notes.md
+          fi
+
+          cat >> release-notes.md <<'EOF'
+
+          ### Install
+
+          1. Open the DMG and drag **BatteryFlow** into **Applications**.
+          2. Launch the app from Applications.
+          3. Approve the one-time admin prompt to install the charge-limit helper.
+          EOF
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: BatteryFlow ${{ github.ref_name }}
+          body_path: release-notes.md
+
+          files: |
+            dist/*.dmg
+            dist/*.zip
+          draft: false
+          prerelease: false
