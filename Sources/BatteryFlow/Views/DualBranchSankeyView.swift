@@ -133,7 +133,39 @@ public struct DualBranchSankeyView: View {
                 let systemThickness: CGFloat = max(8, sysRatio * maxThickness)
                 let totalInputThickness = batteryThickness + systemThickness
 
+                // When plugged in and the battery is discharging, draw a reverse band
+                // from the battery card back into the mixed supply node so the energy
+                // chain reads clearly: battery -> bus -> system.
+                let dischargeWatts = max(0.0, -batteryWatts)
+                let reverseThickness: CGFloat = (isPluggedIn && dischargeWatts > 0.5)
+                    ? max(6, CGFloat(dischargeWatts / total) * maxThickness)
+                    : 0
+                let showReverse = reverseThickness > 0.5
+
                 ZStack {
+                    // Discharge feedback: battery feeds back into the mixed supply bus.
+                    if showReverse {
+                        SankeyFlowBand(
+                            startX: endX,
+                            startY: topRightCenterY,
+                            endX: startX,
+                            endY: leftCenterY,
+                            startThickness: reverseThickness,
+                            endThickness: reverseThickness
+                        )
+                        .fill(
+                            LinearGradient(
+                                // Warm orange marks reverse battery feedback, distinct from the blue/green forward flows.
+                                colors: [
+                                    Color(red: 1.00, green: 0.58, blue: 0.16).opacity(0.52),
+                                    Color(red: 0.95, green: 0.38, blue: 0.06).opacity(0.40)
+                                ],
+                                startPoint: .trailing,
+                                endPoint: .leading
+                            )
+                        )
+                    }
+
                     // Retain thickness 0 view for smooth 0 <-> n growth via Animatable
                     let batStartY = leftCenterY - (totalInputThickness / 2) + (batteryThickness / 2)
                     SankeyFlowBand(
@@ -206,6 +238,20 @@ public struct DualBranchSankeyView: View {
                                 time: t,
                                 count: 6
                             )
+
+                            if showReverse {
+                                // Reverse direction: battery (right) back into the mixed supply (left).
+                                SankeyBubbles(
+                                    startX: endX,
+                                    startY: topRightCenterY,
+                                    endX: startX,
+                                    endY: leftCenterY,
+                                    startThickness: reverseThickness,
+                                    endThickness: reverseThickness,
+                                    time: t,
+                                    count: 4
+                                )
+                            }
                         }
                         .allowsHitTesting(false)
                     }
