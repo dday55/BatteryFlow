@@ -359,11 +359,11 @@
               <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
               <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
               <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
-              <span class="ml-2 font-mono text-[11px] text-slate-400">macOS MenuBar Extra · BatteryFlow Live View</span>
+              <span class="ml-2 font-mono text-[11px] text-slate-400" data-i18n="hero.windowTitle">macOS MenuBar Extra · BatteryFlow Live View</span>
             </div>
             <div class="flex items-center gap-2">
               <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[11px] font-semibold">BYPASS DIRECT ⚡</span>
-              <span class="font-mono text-[11px] text-slate-500">SMC Live (1s)</span>
+              <span class="font-mono text-[11px] text-slate-500" data-i18n="hero.smcLive">SMC Live (1s)</span>
             </div>
           </div>
 
@@ -401,7 +401,7 @@
               <div class="text-xs text-slate-400" data-i18n="hero.statCpu">空闲 CPU 占用</div>
             </div>
             <div>
-              <div class="text-lg font-bold font-mono text-cyan-400">1.0 秒</div>
+              <div class="text-lg font-bold font-mono text-cyan-400" data-i18n="hero.statSmcVal">1.0 秒</div>
               <div class="text-xs text-slate-400" data-i18n="hero.statSmc">SMC 硬件遥测刷新</div>
             </div>
             <div>
@@ -409,7 +409,7 @@
               <div class="text-xs text-slate-400" data-i18n="hero.statReg">最新苹果固件寄存器</div>
             </div>
             <div>
-              <div class="text-lg font-bold font-mono text-emerald-400">0 损耗</div>
+              <div class="text-lg font-bold font-mono text-emerald-400" data-i18n="hero.statBypassVal">0 损耗</div>
               <div class="text-xs text-slate-400" data-i18n="hero.statBypass">真·电源旁路直通</div>
             </div>
           </div>
@@ -550,9 +550,9 @@
             </div>
             <input type="range" id="limitRange" min="60" max="100" step="5" value="80" oninput="updateLimitValue(this.value)" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
             <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1">
-              <span>60% (长驻工控)</span>
-              <span class="text-emerald-400 font-semibold">80% (推荐黄金阈值)</span>
-              <span>100% (满电出行)</span>
+              <span data-i18n="lab.slider60">60% (长驻工控)</span>
+              <span class="text-emerald-400 font-semibold" data-i18n="lab.slider80">80% (推荐黄金阈值)</span>
+              <span data-i18n="lab.slider100">100% (满电出行)</span>
             </div>
           </div>
 
@@ -561,17 +561,17 @@
             <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">
               <div class="text-[11px] text-slate-400" data-i18n="lab.temp">电池温度</div>
               <div class="text-base font-bold font-mono text-emerald-400 mt-0.5" id="sim-temp">28.4 °C</div>
-              <div class="text-[9px] text-slate-500">低温无热应力</div>
+              <div class="text-[9px] text-slate-500" data-i18n="lab.tempSub">低温无热应力</div>
             </div>
             <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">
               <div class="text-[11px] text-slate-400" data-i18n="lab.health">健康寿命</div>
               <div class="text-base font-bold font-mono text-pink-400 mt-0.5">99 %</div>
-              <div class="text-[9px] text-slate-500">已保持 14 个月</div>
+              <div class="text-[9px] text-slate-500" data-i18n="lab.healthSub">已保持 14 个月</div>
             </div>
             <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">
               <div class="text-[11px] text-slate-400" data-i18n="lab.cycles">充放循环</div>
               <div class="text-base font-bold font-mono text-teal-400 mt-0.5">38 次</div>
-              <div class="text-[9px] text-slate-500">零无效微循环</div>
+              <div class="text-[9px] text-slate-500" data-i18n="lab.cyclesSub">零无效微循环</div>
             </div>
           </div>
 
@@ -713,16 +713,16 @@
               <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Safe & Signed</span>
             </div>
             
-            <pre class="bg-black/60 rounded-xl p-4 font-mono text-xs text-slate-300 overflow-x-auto leading-relaxed border border-slate-800/80"><code><span class="text-slate-500">// 1. 传统老旧工具：调用已在最新 macOS 移除的寄存器 (已失效)</span>
+            <pre class="bg-black/60 rounded-xl p-4 font-mono text-xs text-slate-300 overflow-x-auto leading-relaxed border border-slate-800/80"><code><span class="text-slate-500" data-i18n="arch.codeComment1">// 1. 传统老旧工具：调用已在最新 macOS 移除的寄存器 (已失效)</span>
 <span class="text-rose-400">- SMCKey("CH0B")</span>  <span class="text-slate-500">// Obsolete on M-Series firmware</span>
 <span class="text-rose-400">- SMCKey("CHTE")</span>  <span class="text-slate-500">// Deprecated</span>
 
-<span class="text-emerald-400">// 2. BatteryFlow：原生驱动现代 SMC 寄存器链 (安全无阻)</span>
+<span class="text-emerald-400" data-i18n="arch.codeComment2">// 2. BatteryFlow：原生驱动现代 SMC 寄存器链 (安全无阻)</span>
 <span class="text-emerald-400">+ SMCKey("bfF0")</span>  <span class="text-slate-400">// Power Routing Mode Control</span>
 <span class="text-emerald-400">+ SMCKey("bfD0")</span>  <span class="text-slate-400">// Upper Charge Protection Limit (e.g. 80%)</span>
 <span class="text-emerald-400">+ SMCKey("bfE0")</span>  <span class="text-slate-400">// Lower Hysteresis Limit (e.g. 75%)</span>
 
-<span class="text-cyan-400">// 3. 秒级高保真遥测</span>
+<span class="text-cyan-400" data-i18n="arch.codeComment3">// 3. 秒级高保真遥测</span>
 <span class="text-cyan-400">PowerManager.shared.start1HzSampling()</span></code></pre>
 
             <ul class="mt-4 space-y-2 text-xs text-slate-400">
@@ -754,23 +754,23 @@
               <div class="p-3 rounded-xl bg-slate-900/80 border border-rose-500/20">
                 <div class="flex justify-between text-rose-400 font-semibold mb-1">
                   <span data-i18n="arch.unmanaged">传统未管理状态 (持续 100% 涓流浮充)</span>
-                  <span>1.0 年损耗 ~15%</span>
+                  <span data-i18n="arch.lossUnmanagedVal">1.0 年损耗 ~15%</span>
                 </div>
                 <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
                   <div class="bg-rose-500 h-full w-[85%]"></div>
                 </div>
-                <div class="text-[10px] text-slate-500 mt-1">高内阻 · 高发热 · 循环计数虚高</div>
+                <div class="text-[10px] text-slate-500 mt-1" data-i18n="arch.lossUnmanagedSub">高内阻 · 高发热 · 循环计数虚高</div>
               </div>
 
               <div class="p-3 rounded-xl bg-slate-900/80 border border-emerald-500/20">
                 <div class="flex justify-between text-emerald-400 font-semibold mb-1">
                   <span data-i18n="arch.withBf">BatteryFlow 80% 旁路保护模式</span>
-                  <span>1.0 年损耗 &lt; 2%</span>
+                  <span data-i18n="arch.lossManagedVal">1.0 年损耗 &lt; 2%</span>
                 </div>
                 <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
                   <div class="bg-emerald-500 h-full w-[98%]"></div>
                 </div>
-                <div class="text-[10px] text-slate-500 mt-1">低电势压差 · 零微循环 · 旁路直供主板</div>
+                <div class="text-[10px] text-slate-500 mt-1" data-i18n="arch.lossManagedSub">低电势压差 · 零微循环 · 旁路直供主板</div>
               </div>
             </div>
           </div>
@@ -802,7 +802,7 @@
               <tr class="border-b border-slate-800 bg-slate-900/80 text-xs font-semibold text-slate-300">
                 <th class="p-4 sm:p-5" data-i18n="comp.thFeature">核心功能维度</th>
                 <th class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/10">BatteryFlow (本项目)</th>
-                <th class="p-4 sm:p-5 text-slate-400">macOS 原生电池优化</th>
+                <th class="p-4 sm:p-5 text-slate-400" data-i18n="comp.thMacos">macOS 原生电池优化</th>
                 <th class="p-4 sm:p-5 text-slate-400" data-i18n="comp.thOther">常见第三方商业工具</th>
               </tr>
             </thead>
@@ -812,17 +812,17 @@
                   <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                   <span data-i18n="comp.row1">双分支动态能量桑基图</span>
                 </td>
-                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5">独创支持 (实时瓦数流向)</td>
-                <td class="p-4 sm:p-5 text-slate-500">无</td>
-                <td class="p-4 sm:p-5 text-slate-500">无 (仅传统图标)</td>
+                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5" data-i18n="comp.r1_bf">独创支持 (实时瓦数流向)</td>
+                <td class="p-4 sm:p-5 text-slate-500" data-i18n="comp.none">无</td>
+                <td class="p-4 sm:p-5 text-slate-500" data-i18n="comp.r1_other">无 (仅传统图标)</td>
               </tr>
               <tr>
                 <td class="p-4 sm:p-5 text-white flex items-center gap-2">
                   <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                   <span data-i18n="comp.row2">真·硬件级电源旁路 (Bypass)</span>
                 </td>
-                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5">支持 (0 mA 零循环)</td>
-                <td class="p-4 sm:p-5 text-slate-400">系统不可预测触发</td>
+                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5" data-i18n="comp.r2_bf">支持 (0 mA 零循环)</td>
+                <td class="p-4 sm:p-5 text-slate-400" data-i18n="comp.r2_macos">系统不可预测触发</td>
                 <td class="p-4 sm:p-5 text-amber-300" data-i18n="comp.cellBypassOther">多需高阶商业付费版解锁</td>
               </tr>
               <tr>
@@ -830,36 +830,36 @@
                   <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                   <span data-i18n="comp.row3">秒级 AppleSMC 底层传感器遥测</span>
                 </td>
-                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5">1 秒刷新 (电压/电流/温度)</td>
-                <td class="p-4 sm:p-5 text-slate-500">~60 秒系统事件延迟</td>
-                <td class="p-4 sm:p-5 text-slate-400">仅显示部分基础数据</td>
+                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5" data-i18n="comp.r3_bf">1 秒刷新 (电压/电流/温度)</td>
+                <td class="p-4 sm:p-5 text-slate-500" data-i18n="comp.r3_macos">~60 秒系统事件延迟</td>
+                <td class="p-4 sm:p-5 text-slate-400" data-i18n="comp.r3_other">仅显示部分基础数据</td>
               </tr>
               <tr>
                 <td class="p-4 sm:p-5 text-white flex items-center gap-2">
                   <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                   <span data-i18n="comp.row4">最新固件寄存器架构 (bfF0 / bfD0)</span>
                 </td>
-                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5">原生全面支持</td>
-                <td class="p-4 sm:p-5 text-slate-400">系统专有私有协议</td>
-                <td class="p-4 sm:p-5 text-slate-400">老旧 SMCKey 混合</td>
+                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5" data-i18n="comp.r4_bf">原生全面支持</td>
+                <td class="p-4 sm:p-5 text-slate-400" data-i18n="comp.r4_macos">系统专有私有协议</td>
+                <td class="p-4 sm:p-5 text-slate-400" data-i18n="comp.r4_other">老旧 SMCKey 混合</td>
               </tr>
               <tr>
                 <td class="p-4 sm:p-5 text-white flex items-center gap-2">
                   <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                   <span data-i18n="comp.row5">资源消耗 (CPU 占用)</span>
                 </td>
-                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5">~0.3% (锁屏即休眠)</td>
-                <td class="p-4 sm:p-5 text-slate-400">内嵌系统守护</td>
-                <td class="p-4 sm:p-5 text-slate-400">约 0.8% ~ 1.5%</td>
+                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5" data-i18n="comp.r5_bf">~0.3% (锁屏即休眠)</td>
+                <td class="p-4 sm:p-5 text-slate-400" data-i18n="comp.r5_macos">内嵌系统守护</td>
+                <td class="p-4 sm:p-5 text-slate-400" data-i18n="comp.r5_other">约 0.8% ~ 1.5%</td>
               </tr>
               <tr>
                 <td class="p-4 sm:p-5 text-white flex items-center gap-2">
                   <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
                   <span data-i18n="comp.row6">开源协议与商业模式</span>
                 </td>
-                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5">100% 永久开源免费 (MIT)</td>
-                <td class="p-4 sm:p-5 text-slate-400">macOS 自带</td>
-                <td class="p-4 sm:p-5 text-rose-400">商业闭源 / 订阅收费</td>
+                <td class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/5" data-i18n="comp.r6_bf">100% 永久开源免费 (MIT)</td>
+                <td class="p-4 sm:p-5 text-slate-400" data-i18n="comp.r6_macos">macOS 自带</td>
+                <td class="p-4 sm:p-5 text-rose-400" data-i18n="comp.r6_other">商业闭源 / 订阅收费</td>
               </tr>
             </tbody>
           </table>
@@ -1010,7 +1010,8 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
       navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById(btnId);
         const originalHtml = btn.innerHTML;
-        btn.innerHTML = '<span class="text-emerald-400 text-[10px] font-bold">✓ Copied!</span>';
+        const copiedText = currentLang === 'zh' ? '✓ 已复制!' : '✓ Copied!';
+        btn.innerHTML = `<span class="text-emerald-400 text-[10px] font-bold">${copiedText}</span>`;
         setTimeout(() => { btn.innerHTML = originalHtml; }, 2000);
       });
     }
@@ -1024,55 +1025,95 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
     const simPresets = {
       bypass: {
         sourceWatts: 65.0,
-        sourceStatus: '20.2V · 3.22A',
         batteryWatts: 0.0,
-        batteryCurrent: '0 mA (Bypass)',
-        batteryBadge: '旁路保护中',
         systemWatts: 65.0,
-        systemPercent: '100% 直通适配器',
         temp: '28.4 °C',
         streamSpeedBattery: '0',
         streamSpeedSystem: 'stream-fast',
-        badgeColor: 'emerald'
+        badgeColor: 'emerald',
+        zh: {
+          sourceStatus: '20.2V · 3.22A',
+          batteryCurrent: '0 mA (旁路保护)',
+          batteryBadge: '旁路保护中',
+          systemPercent: '100% 直通适配器',
+          systemStatus: 'CPU + GPU + 屏幕'
+        },
+        en: {
+          sourceStatus: '20.2V · 3.22A',
+          batteryCurrent: '0 mA (Bypass)',
+          batteryBadge: 'Bypass Protected',
+          systemPercent: '100% Direct from Adapter',
+          systemStatus: 'CPU + GPU + Display'
+        }
       },
       charging: {
         sourceWatts: 96.0,
-        sourceStatus: '20.5V · 4.68A',
         batteryWatts: 46.0,
-        batteryCurrent: '+3850 mA (快充)',
-        batteryBadge: '快速充电中',
         systemWatts: 50.0,
-        systemPercent: '52% 适配器分流',
         temp: '34.2 °C',
         streamSpeedBattery: 'stream-fast',
         streamSpeedSystem: 'stream-line',
-        badgeColor: 'amber'
+        badgeColor: 'amber',
+        zh: {
+          sourceStatus: '20.5V · 4.68A',
+          batteryCurrent: '+3850 mA (快充)',
+          batteryBadge: '快速充电中',
+          systemPercent: '52% 适配器分流',
+          systemStatus: 'CPU + GPU + 屏幕'
+        },
+        en: {
+          sourceStatus: '20.5V · 4.68A',
+          batteryCurrent: '+3850 mA (Fast Charge)',
+          batteryBadge: 'Fast Charging',
+          systemPercent: '52% Adapter Shared',
+          systemStatus: 'CPU + GPU + Display'
+        }
       },
       discharge: {
         sourceWatts: 0.0,
-        sourceStatus: '未连接适配器',
         batteryWatts: 38.5,
-        batteryCurrent: '-3200 mA (放电)',
-        batteryBadge: '电池主供电',
         systemWatts: 38.5,
-        systemPercent: '100% 电池供给',
         temp: '31.0 °C',
         streamSpeedBattery: 'stream-line',
         streamSpeedSystem: 'stream-line',
-        badgeColor: 'teal'
+        badgeColor: 'teal',
+        zh: {
+          sourceStatus: '未连接电源适配器',
+          batteryCurrent: '-3200 mA (放电)',
+          batteryBadge: '电池主供电',
+          systemPercent: '100% 电池供给',
+          systemStatus: 'CPU + GPU + 屏幕'
+        },
+        en: {
+          sourceStatus: 'Adapter Disconnected',
+          batteryCurrent: '-3200 mA (Discharging)',
+          batteryBadge: 'Battery Driven',
+          systemPercent: '100% Battery Driven',
+          systemStatus: 'CPU + GPU + Display'
+        }
       },
       assist: {
         sourceWatts: 30.0,
-        sourceStatus: '低功率适配器 (30W)',
         batteryWatts: 25.0,
-        batteryCurrent: '-2100 mA (补电)',
-        batteryBadge: '电池动力协同',
         systemWatts: 55.0,
-        systemPercent: '合流供给重载系统',
         temp: '36.5 °C',
         streamSpeedBattery: 'stream-fast',
         streamSpeedSystem: 'stream-fast',
-        badgeColor: 'indigo'
+        badgeColor: 'indigo',
+        zh: {
+          sourceStatus: '低功率适配器 (30W)',
+          batteryCurrent: '-2100 mA (协同补电)',
+          batteryBadge: '电池动力协同',
+          systemPercent: '合流供给重载系统',
+          systemStatus: 'CPU + GPU + 屏幕'
+        },
+        en: {
+          sourceStatus: 'Low-Watt Adapter (30W)',
+          batteryCurrent: '-2100 mA (Assisting)',
+          batteryBadge: 'Hybrid Boost',
+          systemPercent: 'Joint Boost for Heavy Load',
+          systemStatus: 'CPU + GPU + Display'
+        }
       }
     };
 
@@ -1080,6 +1121,7 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
       simState.mode = modeKey;
       const data = simPresets[modeKey];
       if (!data) return;
+      const textData = data[currentLang] || data.zh;
 
       // Update button active states
       document.querySelectorAll('.sim-btn').forEach(btn => {
@@ -1094,12 +1136,13 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
 
       // Update Values in DOM
       document.getElementById('sim-source-watts').textContent = data.sourceWatts.toFixed(1) + ' W';
-      document.getElementById('sim-source-status').textContent = data.sourceStatus;
+      document.getElementById('sim-source-status').textContent = textData.sourceStatus;
       document.getElementById('sim-battery-watts').textContent = data.batteryWatts.toFixed(1) + ' W';
-      document.getElementById('sim-battery-current').textContent = data.batteryCurrent;
-      document.getElementById('sim-battery-badge').textContent = data.batteryBadge;
+      document.getElementById('sim-battery-current').textContent = textData.batteryCurrent;
+      document.getElementById('sim-battery-badge').textContent = textData.batteryBadge;
       document.getElementById('sim-system-watts').textContent = data.systemWatts.toFixed(1) + ' W';
-      document.getElementById('sim-system-percent').textContent = data.systemPercent;
+      document.getElementById('sim-system-percent').textContent = textData.systemPercent;
+      document.getElementById('sim-system-status').textContent = textData.systemStatus;
       document.getElementById('sim-temp').textContent = data.temp;
 
       // Adjust stream pipe animations
@@ -1148,10 +1191,14 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'hero.btnDownload': '立即下载 BatteryFlow (DMG)',
         'hero.panelMain': '主控制台：能量桑基图 & 旁路状态',
         'hero.panelDetails': '硬件明细：底层寄存器传感器全貌',
+        'hero.windowTitle': 'macOS 菜单栏插件 · BatteryFlow 实时监控',
+        'hero.smcLive': 'SMC 实时 (1秒)',
         'hero.statCpu': '空闲 CPU 占用',
         'hero.statSmc': 'SMC 硬件遥测刷新',
+        'hero.statSmcVal': '1.0 秒',
         'hero.statReg': '最新苹果固件寄存器',
         'hero.statBypass': '真·电源旁路直通',
+        'hero.statBypassVal': '0 损耗',
         'lab.badge': '互动体验区',
         'lab.title': '实时能量流动态仿真实验室',
         'lab.desc': '在网页中亲手体验 BatteryFlow 的核心灵魂：随时切换供电模式与电量阈值，直观感受电源总线、电池与系统负载间的真实瓦数流动。',
@@ -1163,9 +1210,15 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'lab.nodeBattery': '电池存储流',
         'lab.nodeSystem': '系统主板即时负载',
         'lab.sliderLabel': '智能充电上限设定 (SMC bfD0)',
+        'lab.slider60': '60% (长驻工控)',
+        'lab.slider80': '80% (推荐黄金阈值)',
+        'lab.slider100': '100% (满电出行)',
         'lab.temp': '电池温度',
+        'lab.tempSub': '低温无热应力',
         'lab.health': '健康寿命',
+        'lab.healthSub': '已保持 14 个月',
         'lab.cycles': '充放循环',
+        'lab.cyclesSub': '零无效微循环',
         'feat.title': '专为挑剔的 Mac 工程师与创造者雕琢',
         'feat.desc': '摒弃臃肿的 Electron 与模糊估算。每一个像素、每一行逻辑均直通 macOS 原生内核。',
         'feat.f1.title': '双分支动态能量桑基图',
@@ -1182,25 +1235,50 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'feat.f6.desc': '无需降低 macOS 安全策略，无需关闭 SIP。仅需一次性授权最小化特权 Helper，代码 100% 开源可查，随时一键彻底干净卸载。',
         'arch.title': '深谙 macOS 电源架构的技术内幕',
         'arch.desc': '全面拥抱现代 Apple Silicon 架构规范，摒弃过时废弃的底层 Hack，兼顾极致性能与系统级安全。',
+        'arch.codeComment1': '// 1. 传统老旧工具：调用已在最新 macOS 移除的寄存器 (已失效)',
+        'arch.codeComment2': '// 2. BatteryFlow：原生驱动现代 SMC 寄存器链 (安全无阻)',
+        'arch.codeComment3': '// 3. 秒级高保真遥测',
         'arch.p1': '无需修改 nvram 或禁用 SIP (System Integrity Protection)',
         'arch.p2': '特权 Helper 仅允许写入 3 个白名单 SMC 键值，绝不越界',
         'arch.p3': '支持一键还原与卸载，无残留系统守护进程',
         'arch.whyTitle': '为什么锁定 80% 与旁路直通如此关键？',
         'arch.whyDesc': '锂电池长期处于 100% 满压（4.2V~4.35V）状态并伴随工作发热，是导致电芯容量永久衰减与鼓包的头号元凶。',
         'arch.unmanaged': '传统未管理状态 (持续 100% 涓流浮充)',
+        'arch.lossUnmanagedVal': '1.0 年损耗 ~15%',
+        'arch.lossUnmanagedSub': '高内阻 · 高发热 · 循环计数虚高',
         'arch.withBf': 'BatteryFlow 80% 旁路保护模式',
+        'arch.lossManagedVal': '1.0 年损耗 < 2%',
+        'arch.lossManagedSub': '低电势压差 · 零微循环 · 旁路直供主板',
         'arch.tip': '当电量达到设定的 80% 时，Mac 自动切断充电流，改为全由外接适配器直供系统，电池进入静息保护状态。',
         'comp.title': '功能横向全面对比',
         'comp.desc': '用事实说话。了解 BatteryFlow 与其他电源管理方案的核心差异。',
         'comp.thFeature': '核心功能维度',
-        'comp.row1': '双分支动态能量桑基图',
-        'comp.row2': '真·硬件级电源旁路 (Bypass)',
-        'comp.row3': '秒级 AppleSMC 底层传感器遥测',
-        'comp.row4': '最新固件寄存器架构 (bfF0 / bfD0)',
-        'comp.row5': '资源消耗 (CPU 占用)',
-        'comp.row6': '开源协议与商业模式',
+        'comp.thMacos': 'macOS 原生电池优化',
         'comp.thOther': '常见第三方商业工具',
+        'comp.row1': '双分支动态能量桑基图',
+        'comp.none': '无',
+        'comp.r1_bf': '独创支持 (实时瓦数流向)',
+        'comp.r1_other': '无 (仅传统图标)',
+        'comp.row2': '真·硬件级电源旁路 (Bypass)',
+        'comp.r2_bf': '支持 (0 mA 零微循环)',
+        'comp.r2_macos': '系统不可预测触发',
         'comp.cellBypassOther': '多需高阶商业付费版解锁',
+        'comp.row3': '秒级 AppleSMC 底层传感器遥测',
+        'comp.r3_bf': '1 秒刷新 (电压/电流/温度)',
+        'comp.r3_macos': '~60 秒系统事件延迟',
+        'comp.r3_other': '仅显示部分基础数据',
+        'comp.row4': '最新固件寄存器架构 (bfF0 / bfD0)',
+        'comp.r4_bf': '原生全面支持',
+        'comp.r4_macos': '系统专有私有协议',
+        'comp.r4_other': '老旧 SMCKey 混合',
+        'comp.row5': '资源消耗 (CPU 占用)',
+        'comp.r5_bf': '~0.3% (锁屏即休眠)',
+        'comp.r5_macos': '内嵌系统守护',
+        'comp.r5_other': '约 0.8% ~ 1.5%',
+        'comp.row6': '开源协议与商业模式',
+        'comp.r6_bf': '100% 永久开源免费 (MIT)',
+        'comp.r6_macos': 'macOS 自带',
+        'comp.r6_other': '商业闭源 / 订阅收费',
         'faq.title': '常见问题解答',
         'faq.desc': '关于安全性、原理与安装细节，你关心的都在这里。',
         'faq.q1': '使用 BatteryFlow 需要关闭 SIP (系统完整性保护) 吗？',
@@ -1235,10 +1313,14 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'hero.btnDownload': 'Download BatteryFlow (DMG)',
         'hero.panelMain': 'Main Console: Live Sankey & Bypass Status',
         'hero.panelDetails': 'Hardware Details: SMC Register Telemetry',
+        'hero.windowTitle': 'macOS MenuBar Extra · BatteryFlow Live View',
+        'hero.smcLive': 'SMC Live (1s)',
         'hero.statCpu': 'Idle CPU Footprint',
-        'hero.statSmc': 'SMC Hardware Telemetry',
-        'hero.statReg': 'Latest Apple Firmware SMC Keys',
-        'hero.statBypass': 'True Hardware Bypass',
+        'hero.statSmc': 'SMC Telemetry Refresh',
+        'hero.statSmcVal': '1.0s',
+        'hero.statReg': 'Modern Apple SMC Keys',
+        'hero.statBypass': 'Hardware Bypass Power',
+        'hero.statBypassVal': 'Zero Loss',
         'lab.badge': 'Interactive Sandbox',
         'lab.title': 'Live Power Flow Dynamic Simulator',
         'lab.desc': 'Experience the core soul of BatteryFlow directly in your browser: switch operating modes and charge targets to watch power routing between bus, battery, and system loads.',
@@ -1250,9 +1332,15 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'lab.nodeBattery': 'Battery Storage Branch',
         'lab.nodeSystem': 'System Direct Load',
         'lab.sliderLabel': 'Smart Charge Target (SMC bfD0)',
+        'lab.slider60': '60% (Desk Docked)',
+        'lab.slider80': '80% (Golden Sweet Spot)',
+        'lab.slider100': '100% (Travel Ready)',
         'lab.temp': 'Temperature',
+        'lab.tempSub': 'Cool & Thermal Stress Free',
         'lab.health': 'Health Capacity',
+        'lab.healthSub': 'Maintained for 14 mos',
         'lab.cycles': 'Cycle Count',
+        'lab.cyclesSub': 'Zero Phantom Wear',
         'feat.title': 'Crafted for Discerning Mac Engineers & Creators',
         'feat.desc': 'No bloated Electron. No vague estimations. Every pixel and line of code speaks directly with the macOS kernel.',
         'feat.f1.title': 'Dual-Branch Dynamic Sankey',
@@ -1269,25 +1357,50 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'feat.f6.desc': 'Never requires disabling SIP or downgrading macOS security. One-time approval installs a minimal open-source helper with a strict 3-key whitelist.',
         'arch.title': 'Inside macOS Power Architecture',
         'arch.desc': 'Engineered specifically for Apple Silicon and modern macOS firmware standards without unsafe kernel compromises.',
+        'arch.codeComment1': '// 1. Legacy tools: Calling registers removed in newer macOS (Broken)',
+        'arch.codeComment2': '// 2. BatteryFlow: Modern SMC register topology (Native & Safe)',
+        'arch.codeComment3': '// 3. Sub-second high-fidelity telemetry',
         'arch.p1': 'No nvram tampering or disabling SIP (System Integrity Protection)',
         'arch.p2': 'Privileged helper strictly restricted to 3 whitelisted SMC registers',
         'arch.p3': 'One-command clean restore and uninstall with zero daemon residue',
         'arch.whyTitle': 'Why Locking at 80% with Bypass Matters',
         'arch.whyDesc': 'Keeping lithium cells at 100% full float voltage (4.2V~4.35V) under operational heat is the #1 cause of premature battery degradation and swelling.',
         'arch.unmanaged': 'Unmanaged Default (100% Constant Float Trickle)',
+        'arch.lossUnmanagedVal': '~15% Degraded in 1 Year',
+        'arch.lossUnmanagedSub': 'High Internal Resistance · Thermal Stress · Micro-Cycles',
         'arch.withBf': 'BatteryFlow 80% Bypass Protection',
+        'arch.lossManagedVal': '< 2% Loss in 1 Year',
+        'arch.lossManagedSub': 'Low Float Voltage · Zero Micro-Cycles · Direct Motherboard Rail',
         'arch.tip': 'Once reaching 80%, charging cuts off and the adapter feeds the system directly, placing the battery into a cold, resting state.',
         'comp.title': 'Comprehensive Feature Comparison',
         'comp.desc': 'Let the engineering speak. See how BatteryFlow compares with other solutions.',
         'comp.thFeature': 'Capability Dimension',
-        'comp.row1': 'Dual-Branch Dynamic Sankey View',
-        'comp.row2': 'True Hardware Bypass (0 mA)',
-        'comp.row3': 'Sub-Second AppleSMC Telemetry',
-        'comp.row4': 'Modern Firmware Keys (bfF0 / bfD0)',
-        'comp.row5': 'Resource Usage (Idle CPU)',
-        'comp.row6': 'License & Commercial Model',
+        'comp.thMacos': 'macOS Native Optimization',
         'comp.thOther': 'Traditional Commercial Utilities',
+        'comp.row1': 'Dual-Branch Dynamic Sankey View',
+        'comp.none': 'None',
+        'comp.r1_bf': 'Native Support (Real-Time Wattage Routing)',
+        'comp.r1_other': 'None (Traditional Icons Only)',
+        'comp.row2': 'True Hardware Bypass (0 mA)',
+        'comp.r2_bf': 'Supported (0 mA Floating Idle)',
+        'comp.r2_macos': 'Unpredictable System Logic',
         'comp.cellBypassOther': 'Often requires paid Pro tiers',
+        'comp.row3': 'Sub-Second AppleSMC Telemetry',
+        'comp.r3_bf': '1-Second Polling (V / A / W / Temp)',
+        'comp.r3_macos': '~60s System Polling Delay',
+        'comp.r3_other': 'Basic Estimates Only',
+        'comp.row4': 'Modern Firmware Keys (bfF0 / bfD0)',
+        'comp.r4_bf': 'Fully Native (bfF0 / bfD0 / bfE0)',
+        'comp.r4_macos': 'Proprietary System Daemons',
+        'comp.r4_other': 'Mixed Legacy SMC Keys',
+        'comp.row5': 'Resource Usage (Idle CPU)',
+        'comp.r5_bf': '~0.3% (Sleeps on Screen Lock)',
+        'comp.r5_macos': 'Built-in System Service',
+        'comp.r5_other': '~0.8% - 1.5%',
+        'comp.row6': 'License & Commercial Model',
+        'comp.r6_bf': '100% Free & Open Source (MIT)',
+        'comp.r6_macos': 'macOS Built-in',
+        'comp.r6_other': 'Closed-Source / Subscription Model',
         'faq.title': 'Frequently Asked Questions',
         'faq.desc': 'Everything you need to know about safety, mechanics, and installation.',
         'faq.q1': 'Does BatteryFlow require disabling SIP (System Integrity Protection)?',
@@ -1340,6 +1453,9 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
       });
       document.getElementById('currentLangText').textContent = lang === 'zh' ? '中 / EN' : 'EN / 中';
       localStorage.setItem('bf_lang', lang);
+
+      // Re-render simulator text in the newly chosen language
+      setSimMode(simState.mode);
 
       if (updateUrl && window.history && window.history.replaceState) {
         const url = new URL(window.location);
