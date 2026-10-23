@@ -263,8 +263,8 @@
       <!-- Desktop Nav Links -->
       <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
         <a href="#features" class="hover:text-emerald-400 transition-colors" data-i18n="nav.features">核心特性</a>
-        <a href="#sankey-lab" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5" data-i18n="nav.lab">
-          <span>能量流实验室</span>
+        <a href="#sankey-lab" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <span data-i18n="nav.lab">能量流实验室</span>
           <span class="flex h-2 w-2 relative">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -507,11 +507,11 @@
                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     <span class="text-xs font-medium text-slate-300" data-i18n="lab.nodeBattery">电池存储流</span>
                   </div>
-                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold" id="sim-battery-badge">旁路保护中</span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold" id="sim-battery-badge" data-i18n="lab.initialBadge">旁路保护中</span>
                 </div>
                 <div class="flex items-baseline justify-between">
                   <div class="text-xl font-bold font-mono text-emerald-400" id="sim-battery-watts">0.0 W</div>
-                  <div class="text-xs font-mono text-slate-400" id="sim-battery-current">0 mA (Bypass)</div>
+                  <div class="text-xs font-mono text-slate-400" id="sim-battery-current" data-i18n="lab.initialCurrent">0 mA (旁路保护)</div>
                 </div>
               </div>
 
@@ -522,11 +522,11 @@
                     <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     <span class="text-xs font-medium text-slate-300" data-i18n="lab.nodeSystem">系统主板即时负载</span>
                   </div>
-                  <span class="text-[10px] font-mono text-slate-400" id="sim-system-status">CPU + GPU + 屏幕</span>
+                  <span class="text-[10px] font-mono text-slate-400" id="sim-system-status" data-i18n="lab.initialSysStatus">CPU + GPU + 屏幕</span>
                 </div>
                 <div class="flex items-baseline justify-between">
                   <div class="text-xl font-bold font-mono text-cyan-400" id="sim-system-watts">65.0 W</div>
-                  <div class="text-xs font-mono text-slate-400" id="sim-system-percent">100% 直通适配器</div>
+                  <div class="text-xs font-mono text-slate-400" id="sim-system-percent" data-i18n="lab.initialSysPercent">100% 直通适配器</div>
                 </div>
               </div>
 
@@ -570,7 +570,7 @@
             </div>
             <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">
               <div class="text-[11px] text-slate-400" data-i18n="lab.cycles">充放循环</div>
-              <div class="text-base font-bold font-mono text-teal-400 mt-0.5">38 次</div>
+              <div class="text-base font-bold font-mono text-teal-400 mt-0.5" id="sim-cycles" data-i18n="lab.cyclesVal">38 次</div>
               <div class="text-[9px] text-slate-500" data-i18n="lab.cyclesSub">零无效微循环</div>
             </div>
           </div>
@@ -801,7 +801,7 @@
             <thead>
               <tr class="border-b border-slate-800 bg-slate-900/80 text-xs font-semibold text-slate-300">
                 <th class="p-4 sm:p-5" data-i18n="comp.thFeature">核心功能维度</th>
-                <th class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/10">BatteryFlow (本项目)</th>
+                <th class="p-4 sm:p-5 text-emerald-400 font-bold bg-emerald-500/10" data-i18n="comp.thBf">BatteryFlow (本项目)</th>
                 <th class="p-4 sm:p-5 text-slate-400" data-i18n="comp.thMacos">macOS 原生电池优化</th>
                 <th class="p-4 sm:p-5 text-slate-400" data-i18n="comp.thOther">常见第三方商业工具</th>
               </tr>
@@ -1218,7 +1218,12 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'lab.health': '健康寿命',
         'lab.healthSub': '已保持 14 个月',
         'lab.cycles': '充放循环',
+        'lab.cyclesVal': '38 次',
         'lab.cyclesSub': '零无效微循环',
+        'lab.initialBadge': '旁路保护中',
+        'lab.initialCurrent': '0 mA (旁路保护)',
+        'lab.initialSysStatus': 'CPU + GPU + 屏幕',
+        'lab.initialSysPercent': '100% 直通适配器',
         'feat.title': '专为挑剔的 Mac 工程师与创造者雕琢',
         'feat.desc': '摒弃臃肿的 Electron 与模糊估算。每一个像素、每一行逻辑均直通 macOS 原生内核。',
         'feat.f1.title': '双分支动态能量桑基图',
@@ -1253,6 +1258,7 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'comp.title': '功能横向全面对比',
         'comp.desc': '用事实说话。了解 BatteryFlow 与其他电源管理方案的核心差异。',
         'comp.thFeature': '核心功能维度',
+        'comp.thBf': 'BatteryFlow (本项目)',
         'comp.thMacos': 'macOS 原生电池优化',
         'comp.thOther': '常见第三方商业工具',
         'comp.row1': '双分支动态能量桑基图',
@@ -1340,7 +1346,12 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'lab.health': 'Health Capacity',
         'lab.healthSub': 'Maintained for 14 mos',
         'lab.cycles': 'Cycle Count',
+        'lab.cyclesVal': '38 Cycles',
         'lab.cyclesSub': 'Zero Phantom Wear',
+        'lab.initialBadge': 'Bypass Active',
+        'lab.initialCurrent': '0 mA (Bypass)',
+        'lab.initialSysStatus': 'CPU + GPU + Display',
+        'lab.initialSysPercent': '100% Direct from Adapter',
         'feat.title': 'Crafted for Discerning Mac Engineers & Creators',
         'feat.desc': 'No bloated Electron. No vague estimations. Every pixel and line of code speaks directly with the macOS kernel.',
         'feat.f1.title': 'Dual-Branch Dynamic Sankey',
@@ -1375,6 +1386,7 @@ sudo rm -f /usr/local/libexec/batteryflow-smc /etc/sudoers.d/batteryflow</code><
         'comp.title': 'Comprehensive Feature Comparison',
         'comp.desc': 'Let the engineering speak. See how BatteryFlow compares with other solutions.',
         'comp.thFeature': 'Capability Dimension',
+        'comp.thBf': 'BatteryFlow (This Project)',
         'comp.thMacos': 'macOS Native Optimization',
         'comp.thOther': 'Traditional Commercial Utilities',
         'comp.row1': 'Dual-Branch Dynamic Sankey View',
