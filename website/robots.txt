@@ -1,0 +1,10 @@
+# Robots.txt for BatteryFlow Official Website
+User-agent: *
+Allow: /
+Allow: /assets/
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Sitemap reference
+Sitemap: https://dday55.github.io/BatteryFlow/sitemap.xml

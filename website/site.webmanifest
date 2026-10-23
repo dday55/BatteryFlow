@@ -1,0 +1,17 @@
+{
+  "name": "BatteryFlow - The Art of Mac Power Management",
+  "short_name": "BatteryFlow",
+  "description": "Lightweight native macOS battery monitor & charge limiter with dynamic Sankey power flow, true hardware bypass, and sub-second AppleSMC telemetry.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0F19",
+  "theme_color": "#10B981",
+  "icons": [
+    {
+      "src": "assets/AppIcon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
