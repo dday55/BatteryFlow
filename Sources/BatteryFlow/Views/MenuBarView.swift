@@ -3,6 +3,7 @@ import AppKit
 
 public struct MenuBarView: View {
     @ObservedObject var power = PowerManager.shared
+    @ObservedObject var launchAtLogin = LaunchAtLogin.shared
     @State private var showHardwareDetails: Bool = false
 
     public init() {}
@@ -15,7 +16,8 @@ public struct MenuBarView: View {
                 batteryWatts: power.snapshot.batteryStorageWatts,
                 systemWatts: power.snapshot.systemDirectWatts,
                 powerState: power.snapshot.powerState,
-                isPluggedIn: power.snapshot.isPluggedIn
+                isPluggedIn: power.snapshot.isPluggedIn,
+                isActive: power.isPanelVisible
             )
             metrics
             controls
@@ -27,6 +29,7 @@ public struct MenuBarView: View {
         .frame(width: 340)
         .onAppear {
             power.setPanelVisible(true)
+            launchAtLogin.refresh()
         }
         .onDisappear {
             power.setPanelVisible(false)
@@ -48,7 +51,10 @@ public struct MenuBarView: View {
                     )
                     .rotationEffect(.degrees(-90))
                     .frame(width: 44, height: 44)
-                    .animation(ValueAnimation.curve, value: power.snapshot.batteryPercent)
+                    .animation(
+                        power.isPanelVisible ? ValueAnimation.curve : nil,
+                        value: power.snapshot.batteryPercent
+                    )
 
                 RollingNumberText(
                     value: Double(power.snapshot.batteryPercent),
@@ -57,7 +63,10 @@ public struct MenuBarView: View {
                     unitSpacing: 0.5
                 )
                 .font(.system(size: 14, weight: .bold, design: .rounded))
-                .animation(ValueAnimation.curve, value: power.snapshot.batteryPercent)
+                .animation(
+                    power.isPanelVisible ? ValueAnimation.curve : nil,
+                    value: power.snapshot.batteryPercent
+                )
             }
 
             VStack(alignment: .leading, spacing: 3) {
@@ -111,7 +120,8 @@ public struct MenuBarView: View {
                 format: "%.1f",
                 unit: "°C",
                 icon: "thermometer.medium",
-                tint: temperatureColor(for: power.snapshot.temperatureCelsius)
+                tint: temperatureColor(for: power.snapshot.temperatureCelsius),
+                isActive: power.isPanelVisible
             )
             MetricTile(
                 title: L10n.t("metric.health"),
@@ -119,7 +129,8 @@ public struct MenuBarView: View {
                 format: "%.0f",
                 unit: "%",
                 icon: "heart.fill",
-                tint: .pink
+                tint: .pink,
+                isActive: power.isPanelVisible
             )
             MetricTile(
                 title: L10n.t("metric.cycles"),
@@ -127,7 +138,8 @@ public struct MenuBarView: View {
                 format: "%.0f",
                 unit: L10n.t("unit.cycles"),
                 icon: "arrow.2.circlepath",
-                tint: .teal
+                tint: .teal,
+                isActive: power.isPanelVisible
             )
         }
     }
@@ -294,30 +306,30 @@ public struct MenuBarView: View {
     private var hardwareDetailRows: some View {
         VStack(spacing: 8) {
             DetailRow(label: L10n.t("details.adapter"), value: adapterText)
-            AnimatedDetailRow(label: L10n.t("details.voltage"), value: power.snapshot.voltageVolts, format: "%.3f", suffix: " V")
-            AnimatedDetailRow(label: L10n.t("details.systemLoad"), value: power.snapshot.systemLoadWatts, format: "%.2f", suffix: " W")
+            AnimatedDetailRow(label: L10n.t("details.voltage"), value: power.snapshot.voltageVolts, format: "%.3f", suffix: " V", isActive: power.isPanelVisible)
+            AnimatedDetailRow(label: L10n.t("details.systemLoad"), value: power.snapshot.systemLoadWatts, format: "%.2f", suffix: " W", isActive: power.isPanelVisible)
 
             if let parts = adapterInputParts {
-                DetailValueRow(label: L10n.t("details.adapterInput"), parts: parts)
+                DetailValueRow(label: L10n.t("details.adapterInput"), parts: parts, isActive: power.isPanelVisible)
             } else {
                 DetailRow(label: L10n.t("details.adapterInput"), value: L10n.t("details.adapterInputUnavailable"))
             }
 
             if let parts = batteryCurrentParts {
-                DetailValueRow(label: L10n.t("details.batteryCurrent"), parts: parts)
+                DetailValueRow(label: L10n.t("details.batteryCurrent"), parts: parts, isActive: power.isPanelVisible)
             } else {
                 DetailRow(label: L10n.t("details.batteryCurrent"), value: "—")
             }
 
 
             if let parts = batteryPowerParts {
-                DetailValueRow(label: L10n.t("details.batteryPower"), parts: parts)
+                DetailValueRow(label: L10n.t("details.batteryPower"), parts: parts, isActive: power.isPanelVisible)
             } else {
                 DetailRow(label: L10n.t("details.batteryPower"), value: "—")
             }
 
             if let parts = capacityParts {
-                DetailValueRow(label: L10n.t("details.capacity"), parts: parts)
+                DetailValueRow(label: L10n.t("details.capacity"), parts: parts, isActive: power.isPanelVisible)
             } else {
                 DetailRow(label: L10n.t("details.capacity"), value: "—")
             }
@@ -327,15 +339,44 @@ public struct MenuBarView: View {
     }
 
     private var footer: some View {
-        HStack(spacing: 12) {
-            Spacer()
+        VStack(alignment: .leading, spacing: 5) {
+            HStack(spacing: 8) {
+                Text(L10n.t("footer.launchAtLogin"))
+                    .font(.system(size: 11))
+                    .foregroundColor(.secondary)
 
-            Button(L10n.t("footer.quit")) {
-                NSApplication.shared.terminate(nil)
+                Toggle("", isOn: Binding(
+                    get: { launchAtLogin.isEnabled },
+                    set: { launchAtLogin.setEnabled($0) }
+                ))
+                .toggleStyle(.switch)
+                .controlSize(.mini)
+                .labelsHidden()
+                .help(L10n.t("footer.launchAtLoginHelp"))
+
+                Spacer()
+
+                Button(L10n.t("footer.quit")) {
+                    NSApplication.shared.terminate(nil)
+                }
+                .buttonStyle(.plain)
+                .font(.system(size: 12))
+                .foregroundColor(.secondary)
             }
-            .buttonStyle(.plain)
-            .font(.system(size: 12))
-            .foregroundColor(.secondary)
+
+            if let error = launchAtLogin.errorMessage {
+                HStack(alignment: .top, spacing: 4) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 9))
+                        .padding(.top, 1)
+                    Text(error)
+                        .font(.system(size: 10))
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 0)
+                }
+                .foregroundColor(.orange)
+            }
         }
         .padding(.bottom, 2)
     }
@@ -474,6 +515,8 @@ struct MetricTile: View {
     var unit: String? = nil
     let icon: String
     let tint: Color
+    let isActive: Bool
+
 
     var body: some View {
         VStack(spacing: 3) {
@@ -489,7 +532,7 @@ struct MetricTile: View {
                     unitSpacing: unit == "%" ? 1.0 : 2.0
                 )
                 .font(.system(size: 12, weight: .bold, design: .monospaced))
-                .animation(ValueAnimation.curve, value: value)
+                .animation(isActive ? ValueAnimation.curve : nil, value: value)
             } else {
                 Text("—")
                     .font(.system(size: 12, weight: .bold, design: .monospaced))
@@ -537,6 +580,7 @@ struct DetailRow: View {
 struct DetailValueRow: View {
     let label: String
     let parts: [DetailPart]
+    let isActive: Bool
 
     var body: some View {
         HStack {
@@ -551,7 +595,7 @@ struct DetailValueRow: View {
                         Text(text)
                     case .number(let value, let format):
                         RollingNumberText(value: value, format: format)
-                            .animation(ValueAnimation.curve, value: value)
+                            .animation(isActive ? ValueAnimation.curve : nil, value: value)
                     }
                 }
             }
@@ -569,6 +613,7 @@ struct AnimatedDetailRow: View {
     let value: Double?
     let format: String
     let suffix: String
+    let isActive: Bool
 
     var body: some View {
         HStack {
@@ -582,7 +627,7 @@ struct AnimatedDetailRow: View {
                     .foregroundColor(.primary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.82)
-                    .animation(ValueAnimation.curve, value: value)
+                    .animation(isActive ? ValueAnimation.curve : nil, value: value)
             } else {
                 Text("—")
                     .font(.system(size: 11, design: .monospaced))

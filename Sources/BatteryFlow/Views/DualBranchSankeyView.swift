@@ -13,6 +13,9 @@ public struct DualBranchSankeyView: View {
     public let systemWatts: Double
     public let powerState: PowerState
     public let isPluggedIn: Bool
+    /// False while the menu bar panel is closed: stops the bubbles' TimelineView and the
+    /// implicit geometry/number animations so no frames are produced off-screen.
+    public let isActive: Bool
 
     private var isBypassActive: Bool { powerState == .chargeStopped }
 
@@ -26,13 +29,15 @@ public struct DualBranchSankeyView: View {
         batteryWatts: Double,
         systemWatts: Double,
         powerState: PowerState,
-        isPluggedIn: Bool
+        isPluggedIn: Bool,
+        isActive: Bool = true
     ) {
         self.sourceWatts = sourceWatts
         self.batteryWatts = batteryWatts
         self.systemWatts = systemWatts
         self.powerState = powerState
         self.isPluggedIn = isPluggedIn
+        self.isActive = isActive
     }
 
     public var body: some View {
@@ -211,7 +216,10 @@ public struct DualBranchSankeyView: View {
                     )
 
                     // Flow bubbles: sole dynamic layer (no scanline/ripple to prevent brightness flickering)
-                    TimelineView(.animation) { timeline in
+                    // Capped at 20 fps and paused when the panel is closed: the bubbles drift
+                // slowly, so 120 fps bought nothing but CPU. An uncapped animation schedule
+                // keeps a display link running for the window's lifetime, even off-screen.
+                TimelineView(.animation(minimumInterval: 1.0 / 20.0, paused: !isActive)) { timeline in
                         let t = timeline.date.timeIntervalSinceReferenceDate
 
                         ZStack {
@@ -264,7 +272,8 @@ public struct DualBranchSankeyView: View {
                         icon: isPluggedIn ? "bolt.fill" : "battery.100",
                         tint: .accentColor,
                         width: cardWidth,
-                        height: cardHeight
+                        height: cardHeight,
+                        isActive: isActive
                     )
                     .position(x: cardWidth / 2, y: leftCenterY)
 
@@ -278,7 +287,8 @@ public struct DualBranchSankeyView: View {
                             ? Color(red: 0.15, green: 0.55, blue: 0.98)
                             : (isBypassActive ? .secondary : Color(red: 0.1, green: 0.75, blue: 0.45)),
                         width: cardWidth,
-                        height: cardHeight
+                        height: cardHeight,
+                        isActive: isActive
                     )
                     .position(x: w - (cardWidth / 2), y: topRightCenterY)
 
@@ -288,11 +298,15 @@ public struct DualBranchSankeyView: View {
                         icon: "laptopcomputer",
                         tint: Color(red: 0.15, green: 0.55, blue: 0.98),
                         width: cardWidth,
-                        height: cardHeight
+                        height: cardHeight,
+                        isActive: isActive
                     )
                     .position(x: w - (cardWidth / 2), y: bottomRightCenterY)
                 }
-                .animation(ValueAnimation.curve, value: SankeyLevels(battery: batteryWatts, system: systemWatts))
+                .animation(
+                    isActive ? ValueAnimation.curve : nil,
+                    value: SankeyLevels(battery: batteryWatts, system: systemWatts)
+                )
             }
             .frame(height: canvasHeight)
         }
@@ -475,6 +489,7 @@ struct SankeyPill: View {
     let tint: Color
     let width: CGFloat
     let height: CGFloat
+    let isActive: Bool
 
     var body: some View {
         HStack(spacing: 6) {
@@ -493,7 +508,7 @@ struct SankeyPill: View {
                 RollingNumberText(value: watts, format: "%.1f", suffix: "W", unitSpacing: 2.5)
                     .font(.system(size: 12, weight: .bold, design: .monospaced))
                     .foregroundColor(.primary)
-                    .animation(ValueAnimation.curve, value: watts)
+                    .animation(isActive ? ValueAnimation.curve : nil, value: watts)
             }
         }
         .padding(.horizontal, 8)

@@ -5,6 +5,12 @@ import AppKit
 struct BatteryFlowApp: App {
     @StateObject private var power = PowerManager.shared
 
+    init() {
+        // Initialize early so an existing login item is re-pointed at this bundle
+        // location before the panel is first opened.
+        _ = LaunchAtLogin.shared
+    }
+
     var body: some Scene {
         MenuBarExtra {
             MenuBarView()

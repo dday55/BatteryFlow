@@ -43,7 +43,9 @@ public final class PowerManager: ObservableObject {
     private var distributedObservers: [NSObjectProtocol] = []
     private var localObservers: [NSObjectProtocol] = []
 
-    private var isPanelVisible = false
+    /// Whether the menu bar panel is currently open. Drives UI-side animation pausing
+    /// so a closed panel does not keep the display link and render pipeline busy.
+    @Published public private(set) var isPanelVisible = false
     private var isSystemAwake = true
     private var lastPolicySignature = ""
     private var lastPolicyAppliedAt = Date.distantPast
@@ -63,7 +65,7 @@ public final class PowerManager: ObservableObject {
 
         // Continuous 1s sampling: SMC current/voltage/power/temperature are second-level data,
         // no longer relying on MenuBarExtra's unreliable onAppear/onDisappear for sampling rate.
-        startFastTimer()
+        startSamplingTimer()
     }
 
     // Note: PowerManager is an application-lifetime singleton (init is private).
@@ -80,12 +82,17 @@ public final class PowerManager: ObservableObject {
         }
         isSampling = true
         let limit = chargeLimit
+        let includeSMC = isPanelVisible
         let limitActive: Bool = {
             if case .applied = chargeControlState { return true }
             return false
         }()
         samplerQueue.async { [weak self] in
-            let newSnapshot = PowerSampler.sample(chargeLimit: limit, isChargeLimitActive: limitActive)
+            let newSnapshot = PowerSampler.sample(
+                chargeLimit: limit,
+                isChargeLimitActive: limitActive,
+                includeSMC: includeSMC
+            )
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 self.isSampling = false
@@ -105,11 +112,14 @@ public final class PowerManager: ObservableObject {
         enforceChargeLimit()
     }
 
-    /// Called on menu bar panel visibility changes: triggers immediate snapshot upon opening.
-    /// Sampling runs continuously every 1s regardless of panel state to prevent stale data upon reopen.
+    /// Called on menu bar panel visibility changes: triggers an immediate SMC sample on open
+    /// so the panel never shows stale data, and slows the hidden sampler down afterwards.
     public func setPanelVisible(_ visible: Bool) {
         guard isPanelVisible != visible else { return }
         isPanelVisible = visible
+        // Second-level telemetry only matters while the panel is on screen. Reschedule the
+        // sampler (1s visible / 5s hidden) and refresh immediately when the panel opens.
+        startSamplingTimer()
         if visible {
             refreshSnapshot()
         }
@@ -117,14 +127,20 @@ public final class PowerManager: ObservableObject {
 
     // MARK: - Timers
 
-    private func startFastTimer() {
-        guard fastTimer == nil, isSystemAwake else { return }
-        let timer = Timer(timeInterval: 1.0, repeats: true) { [weak self] _ in
+    /// Sampling cadence follows what is actually visible: 1s while the panel is open,
+    /// 5s while it is closed. Each SMC round trip is a synchronous kernel transaction
+    /// (~2ms per key), so 1Hz sampling off-screen was the bulk of the idle CPU.
+    private func startSamplingTimer() {
+        guard isSystemAwake else { return }
+        let interval: TimeInterval = isPanelVisible ? 1.0 : 5.0
+        if let existing = fastTimer, existing.timeInterval == interval { return }
+        fastTimer?.invalidate()
+        let timer = Timer(timeInterval: interval, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in
                 self?.refreshSnapshot()
             }
         }
-        timer.tolerance = 0.2
+        timer.tolerance = isPanelVisible ? 0.2 : 1.0
         RunLoop.main.add(timer, forMode: .common)
         fastTimer = timer
     }
@@ -222,7 +238,7 @@ public final class PowerManager: ObservableObject {
         guard !isSystemAwake else { return }
         isSystemAwake = true
         lastPolicySignature = ""
-        startFastTimer()
+        startSamplingTimer()
         refreshSnapshot()
     }
 
@@ -298,7 +314,11 @@ public final class PowerManager: ObservableObject {
 
 /// Performs all IOKit reads on a background queue and outputs a pure value-type snapshot.
 enum PowerSampler {
-    static func sample(chargeLimit: Int, isChargeLimitActive: Bool = false) -> PowerSnapshot {
+    static func sample(
+        chargeLimit: Int,
+        isChargeLimitActive: Bool = false,
+        includeSMC: Bool = true
+    ) -> PowerSnapshot {
         var snapshot = PowerSnapshot()
         snapshot.chargeLimit = chargeLimit
 
@@ -319,7 +339,12 @@ enum PowerSampler {
             snapshot.adapterName = snapshot.isPluggedIn ? L10n.t("adapter.externalPower") : L10n.t("adapter.notConnected")
         }
 
-        readBatteryTelemetry(into: &snapshot, smcReading: SMCReader.readBattery())
+        // While the panel is closed the SMC round trips are skipped: charge limiting only
+        // needs percent/plug state, which the cheap IOPS + registry reads already provide.
+        readBatteryTelemetry(
+            into: &snapshot,
+            smcReading: includeSMC ? SMCReader.readBattery() : SMCBatteryReading()
+        )
         calculatePowerFlows(&snapshot, isChargeLimitActive: isChargeLimitActive)
 
         return snapshot

@@ -49,6 +49,12 @@
 "power.intoBattery" = " W (into battery)";
 "power.fromBattery" = " W (from battery)";
 "footer.quit" = "Quit";
+"footer.launchAtLogin" = "Launch at login";
+"footer.launchAtLoginHelp" = "Start BatteryFlow automatically when you log in to this Mac";
+"launchAtLogin.needsBundle" = "Open BatteryFlow.app to enable launch at login";
+"launchAtLogin.translocated" = "Move BatteryFlow to the Applications folder first: apps opened from a download run from a temporary location";
+"launchAtLogin.writeFailed" = "Could not update the login item: %@";
+"launchAtLogin.removeFailed" = "Could not remove the login item: %@";
 "sankey.title" = "Live power flow";
 "sankey.bypass" = "Bypass active";
 "sankey.limitDischarge" = "Limit discharge";

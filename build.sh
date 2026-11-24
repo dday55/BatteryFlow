@@ -23,6 +23,7 @@ swiftc -O -swift-version 6 \
   Sources/BatteryFlow/Services/ChargeLimiter.swift \
   Sources/BatteryFlow/Services/SMCReader.swift \
   Sources/BatteryFlow/Services/PowerManager.swift \
+  Sources/BatteryFlow/Services/LaunchAtLogin.swift \
   Sources/BatteryFlow/Views/RollingNumberText.swift \
   Sources/BatteryFlow/Views/DualBranchSankeyView.swift \
   Sources/BatteryFlow/Views/MenuBarView.swift \

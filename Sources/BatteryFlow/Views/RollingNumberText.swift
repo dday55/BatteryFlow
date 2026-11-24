@@ -2,12 +2,12 @@ import SwiftUI
 
 /// Global numeric value easing.
 ///
-/// Uses a critically damped spring with a long response rather than a fixed-duration easeInOut:
-/// Under 1-second sampling, easeInOut performs a "start-stop" every second; a spring carries over
-/// velocity from the previous transition, delivering a continuous gliding feel as targets change.
-/// A larger response gives a smoother transition (recommended: 1.3–2.0).
+/// A spring keeps velocity across the 1-second sample boundaries, so values glide instead of
+/// restarting from zero. The response must stay below the 1-second sampling interval: with a
+/// longer response the spring never settles, the display link runs continuously and the app
+/// burns CPU even while the panel is closed. 0.6s settles between samples.
 enum ValueAnimation {
-    static let response: Double = 2.4
+    static let response: Double = 0.6
     static var curve: Animation { .spring(response: response, dampingFraction: 1.0) }
 }
 

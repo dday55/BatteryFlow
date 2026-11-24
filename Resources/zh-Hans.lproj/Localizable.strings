@@ -49,6 +49,12 @@
 "power.intoBattery" = " W（充入电池）";
 "power.fromBattery" = " W（电池放出）";
 "footer.quit" = "退出";
+"footer.launchAtLogin" = "开机自启动";
+"footer.launchAtLoginHelp" = "登录系统时自动启动 BatteryFlow";
+"launchAtLogin.needsBundle" = "请从 BatteryFlow.app 打开后再启用开机自启动";
+"launchAtLogin.translocated" = "请先将 BatteryFlow 移动到「应用程序」文件夹（从下载目录直接运行会使用临时路径）";
+"launchAtLogin.writeFailed" = "无法写入开机自启动配置：%@";
+"launchAtLogin.removeFailed" = "无法移除开机自启动配置：%@";
 "sankey.title" = "实时供电分流";
 "sankey.bypass" = "旁路供电生效中";
 "sankey.limitDischarge" = "限充放电 · 降至上限";
